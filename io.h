@@ -10,7 +10,7 @@
 #define RESET "\x1B[0m"
 
 #define ESC '\033'
-#define ENTER '\r'
+#define ENTER '\n'
 #define ALL_SPECIAL_CHARS "\033\r"
 
 FILE* open_file(char* filename, bool binary, bool write_mode, bool exit_on_fail);
@@ -19,3 +19,4 @@ int read_int(FILE* file, bool binary);
 void read_string(char* str, FILE* file, bool until_ln);
 void clear_screen();
 void flush_buffer(FILE* file);
+void print_n_times(int n, char c);

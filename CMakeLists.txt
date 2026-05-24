@@ -13,7 +13,7 @@ add_executable(marketplace_in_c main.c
         stack.h
         image.c
         image.h
-        tree.cpp
+        tree.c
         tree.h
         interaction.c
         interaction.h
@@ -31,6 +31,6 @@ endif()
 add_custom_target(run
         COMMAND konsole --hold -e $<TARGET_FILE:marketplace_in_c>
         DEPENDS marketplace_in_c
-        WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+        WORKING_DIRECTORY /home/slavita/CLionProjects/marketplace_in_c
 )
 

@@ -1,4 +1,11 @@
 #include "io.h"
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <stdio_ext.h>
+#include <termios.h>
+#include <unistd.h>
+#endif
 
 FILE* open_file(char *filename, bool binary, bool write_mode, bool exit_on_fail)
 {
@@ -18,7 +25,7 @@ int read_int_range(int from, int to)
     int x;
     do
     {
-        printf("Введите число (от %d, до %d): ");
+        printf("Введите число (от %d, до %d): ", from, to);
         x = read_int(stdin, false);
     } while (x < from || x > to);
     return x;
@@ -41,10 +48,25 @@ void read_string(char* str, FILE* file, bool until_ln)
     fscanf(file, (until_ln ? "%*[^\n]" : "%s"), str);
 }
 
+
 void flush_buffer(FILE* file)
 {
     if (file == stdin)
-        rewind(file);
+    {
+#ifdef _WIN32
+        rewind(stdin);
+#else
+        __fpurge(stdin); // Очищает внутренний буфер C (остатки от scanf/fgets)
+        tcflush(STDIN_FILENO, TCIFLUSH); // Очищает буфер терминала ОС (нажатия клавиш)
+#endif
+    }
+}
+
+
+void print_n_times(int n, char c)
+{
+    for (int i = 0; i < n; i++)
+        printf("%c", c);
 }
 
 void clear_screen()

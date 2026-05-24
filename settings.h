@@ -8,7 +8,7 @@
 #define DESCRIPTION_LENGTH 200
 
 #define CARD_WIDTH 30
-#define CARD_HEIGHT 40
+#define CARD_HEIGHT 12
 
 #define MAX_FIELD_COUNT 6
 

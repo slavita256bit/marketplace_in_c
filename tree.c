@@ -102,9 +102,20 @@ void tree_clear(TreeNode** node)
 	(*node) = NULL;
 }
 
- tree_find(TreeNode* node)
+TreeNode* tree_find(TreeNode* node, int index)
 {
-	//todo
+	if (node == NULL)
+		return NULL;
+
+	int left_size = tree_get_size(node->left);
+
+	if (index == left_size)
+		return node;
+
+	if (index < left_size)
+		return tree_find(node->left, index);
+
+	return tree_find(node->right, index - left_size - 1);
 }
 
 int tree_get_size(TreeNode* node)
@@ -121,4 +132,17 @@ void tree_save_direct(TreeNode* current, FILE* file)
 	fwrite(&current->item, sizeof(Product), 1, file);
 	tree_save_direct(current->left, file);
 	tree_save_direct(current->right, file);
+}
+
+void tree_print_symmetric(TreeNode* node, Image* images, bool ascending)
+{
+	if (node == NULL)
+		return;
+
+	TreeNode* first = (ascending ? node->right : node->left);
+	TreeNode* second = (ascending ? node->left : node->right);
+
+	tree_print_symmetric(first, images, ascending);
+	print_card_short(node->item, images);
+	tree_print_symmetric(second, images, ascending);
 }
