@@ -3,16 +3,30 @@ project(marketplace_in_c C)
 
 set(CMAKE_C_STANDARD 23)
 
-include(CheckSymbolExists)
-
 add_executable(marketplace_in_c main.c
         product.c
         product.h
         settings.h
         io.c
         io.h
+        stack.c
+        stack.h
         image.c
-        image.h)
+        image.h
+        tree.cpp
+        tree.h
+        interaction.c
+        interaction.h
+        utils.h)
+
+if(WIN32)
+    target_compile_definitions(marketplace_in_c PRIVATE USE_CONIO)
+endif()
+
+if(UNIX)
+    target_sources(marketplace_in_c PRIVATE linux-specific/conio.c linux-specific/conio.h)
+    target_include_directories(marketplace_in_c PRIVATE linux-specific)
+endif()
 
 add_custom_target(run
         COMMAND konsole --hold -e $<TARGET_FILE:marketplace_in_c>

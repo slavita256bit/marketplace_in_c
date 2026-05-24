@@ -1,0 +1,15 @@
+#pragma once
+
+enum State {
+    MENU = 'm',
+    ADD_PRODUCT = 'a',
+    IMPORT_PRODUCTS = 'i',
+    EXPORT_PRODUCTS = 'e',
+    LIST_PRODUCTS = 'l',
+    VIEW_PRODUCT = 'v',
+};
+typedef enum State State;
+
+char ask_action(const char* acceptable_chars);
+void read_string_or_default(char* out, const char* default_string);
+char wait_special_symbol(bool esc, bool enter);
