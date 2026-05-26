@@ -134,7 +134,8 @@ void tree_save_direct(TreeNode* current, FILE* file)
 	tree_save_direct(current->right, file);
 }
 
-void tree_print_symmetric(TreeNode* node, Image* images, bool ascending)
+// Симметричный обход
+void tree_card_print(TreeNode* node, Image* images, bool ascending)
 {
 	if (node == NULL)
 		return;
@@ -142,7 +143,7 @@ void tree_print_symmetric(TreeNode* node, Image* images, bool ascending)
 	TreeNode* first = (ascending ? node->right : node->left);
 	TreeNode* second = (ascending ? node->left : node->right);
 
-	tree_print_symmetric(first, images, ascending);
-	print_card_short(node->item, images);
-	tree_print_symmetric(second, images, ascending);
+	tree_card_print(first, images, ascending);
+	print_product_row(node->item, images);
+	tree_card_print(second, images, ascending);
 }

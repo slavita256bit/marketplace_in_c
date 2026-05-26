@@ -17,7 +17,9 @@ add_executable(marketplace_in_c main.c
         tree.h
         interaction.c
         interaction.h
-        utils.h)
+        utils.h
+        categories.h
+        categories.c)
 
 if(WIN32)
     target_compile_definitions(marketplace_in_c PRIVATE USE_CONIO)

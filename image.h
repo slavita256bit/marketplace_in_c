@@ -10,4 +10,5 @@ struct Image
     char symbols[CARD_HEIGHT][CARD_WIDTH];
 };
 
-Image* import_images(char* filename, int* n);
+Image* import_images(int* n);
+void print_available_images(Image* images, int images_count);

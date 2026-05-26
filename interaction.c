@@ -23,7 +23,7 @@ char ask_action(const char* acceptable_chars)
     bool valid_char = false;
     do
     {
-        flush_buffer(stdin);
+        flush_buffer(stdin, true);
         //scanf_s("%c", &answer, 1);
         answer = _getch();
         printf("%c\n", answer);
@@ -41,15 +41,15 @@ char wait_special_symbol(bool esc, bool enter)
     char answer;
     do
     {
-        flush_buffer(stdin);
+        flush_buffer(stdin, true);
         answer = _getch();
-    } while (!((esc && answer == ESC) || (enter && answer == ENTER)));
+    } while (!((esc && answer == ESC) || (esc && answer == ESC_R) || (enter && answer == ENTER)));
     return answer;
 }
 
 void read_string_or_default(char* out, const char* default_string)
 {
-    flush_buffer(stdin);
+    flush_buffer(stdin, true);
     fgets(out, sizeof(out), stdin);
     if (out[0] == '\n')
     {

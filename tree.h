@@ -26,4 +26,4 @@ TreeNode* tree_find(TreeNode* node, int index);
 
 int tree_get_size(TreeNode* node);
 void tree_save_direct(TreeNode* current, FILE* file);
-void tree_print_symmetric(TreeNode* node, Image* images, bool ascending);
+void tree_card_print(TreeNode* node, Image* images, bool ascending);

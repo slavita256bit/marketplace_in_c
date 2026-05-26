@@ -3,6 +3,7 @@
 enum State {
     MENU = 'm',
     ADD_PRODUCT = 'a',
+    ADD_CATEGORY = 'c',
     IMPORT_PRODUCTS = 'i',
     EXPORT_PRODUCTS = 'e',
     LIST_PRODUCTS = 'l',

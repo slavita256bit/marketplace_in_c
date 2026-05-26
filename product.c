@@ -3,6 +3,8 @@
 #include "stack.h"
 #include "tree.h"
 #include "image.h"
+#include "categories.h"
+#include <string.h>
 
 void import_products(TreeNode** products, char* filename)
 {
@@ -34,133 +36,111 @@ void export_products(TreeNode* products, char* filename)
 	fclose(file);
 }
 
-int get_categories_count(char *filename)
+Product read_new_product(int new_id, int images_count)
 {
-	FILE* file = open_file(filename, true, false, true);
-	if (file == NULL)
-		return 0;
-
-	fseek(file, 0, SEEK_END);
-	int count = ftell(file) / sizeof(Category);
-	fclose(file);
-
-	return count;
-}
-
-Category get_category(char *filename, int index)
-{
-	Category category;
-	FILE* file = open_file(filename, true, false, true);
-	fseek(file, index * sizeof(Category), SEEK_SET);
-	fread(&category, sizeof(Category), 1, file);
-	fclose(file);
-	return category;
-}
-
-void add_category(char *filename, Category category)
-{
-	FILE* file = fopen(filename, "ab");
-	if (file == NULL)
-	{
-		printf("Не удалось открыть файл %s для добавления категории.\n", filename);
-		exit(0);
-	}
-
-	fwrite(&category, sizeof(Category), 1, file);
-	fclose(file);
-}
-
-Product read_new_product(int new_id)
-{
-	Product product = {0};
+	Product product;
 	product.id = new_id;
-
 	printf("Название: ");
 	read_string(product.name, stdin, true);
-
 	printf("Описание: ");
 	read_string(product.description, stdin, true);
-
 	printf("Цена: ");
 	product.cost = read_int(stdin, false);
-
+	printf("Рейтинг (от 1 до %d): ", MAX_RATING);
 	product.rating = read_int_range(1, MAX_RATING);
-
-	// Подумать как сделать лушче (мб выводить сразу картинки чтобы было видно)
 	printf("ID картинки: ");
-	product.image_id = read_int(stdin, false);
-
+	product.image_id = read_int_range(0, images_count - 1);
 	printf("ID категории: ");
 	product.cs.category_id = read_int(stdin, false);
+
+	Category cat = get_category(product.cs.category_id);
+	for (int i = 0; i < cat.fields_count; i++)
+	{
+		printf("%s: ", cat.field_names[i]);
+
+		if (cat.field_types[i] == INT)
+			product.cs.fields[i].number = read_int(stdin, false);
+
+		else if (cat.field_types[i] == FLOAT)
+			product.cs.fields[i].real = read_float(stdin, false);
+
+		else if (cat.field_types[i] == STR)
+			read_string(product.cs.fields[i].str, stdin, true);
+	}
 
 	return product;
 }
 
-void print_rating(int rating)
+void print_rating(char* buffer, int rating)
 {
-	if (rating <= 2) printf(SET_RED);
-	else if (rating == 3) printf(SET_YELLOW);
-	else printf(SET_GREEN);
+	char* ptr = buffer;
+	if (rating <= 2) ptr += sprintf(ptr, "%s", SET_RED);
+	else if (rating == 3) ptr += sprintf(ptr, "%s", SET_YELLOW);
+	else ptr += sprintf(ptr, "%s", SET_GREEN);
 
-	for (int i = 0; i < rating; i++) printf("*");
-	for (int i = rating; i < MAX_RATING; i++) printf(" ");
+	for (int i = 0; i < rating; i++) ptr += sprintf(ptr, "*");
+	for (int i = rating; i < MAX_RATING; i++) ptr += sprintf(ptr, " ");
 
-	printf(RESET);
+	sprintf(ptr, "%s", RESET);
 }
 
-void print_card_short(Product product, Image* images)
+void print_products_header()
 {
-	print_n_times(CARD_WIDTH + 50, '=');
+	printf(SET_BLUE);
+	printf("%-*s %-2s %-*s %-*s %-5s %-10s \n",
+			CARD_WIDTH, "Картинка", "ID", MAX_LENGTH, "Название", MAX_LENGTH, "Категория", "Цена", "Рейтинг");
+	printf(RESET "\n");
+}
+
+// Вывод одного товара в виде строки таблицы
+void print_product_row(Product product, Image* images)
+{
+	Category category = get_category(product.cs.category_id);
+
+	char rating_str[MAX_LENGTH];
+	print_rating(rating_str, product.rating);
+
+	printf("%-*s %-2d %-*s %-*s %-5d %-10s \n",
+			CARD_WIDTH, images[product.image_id].symbols[0], product.id, MAX_LENGTH, product.name, MAX_LENGTH, category.name, product.cost, rating_str);
+
+	for (int i = 1; i < CARD_HEIGHT; i++)
+		printf("%*s\n", CARD_WIDTH, images[product.image_id].symbols[i]);
+}
+
+// Вывод большой карточки товара с картинкой
+void print_product_details(Product product, Image* images)
+{
+	char info[CARD_HEIGHT][DESCRIPTION_LENGTH] = {0};
+	int lines = 0;
+	Category category = get_category(product.cs.category_id);
+
+	sprintf(info[lines++], "ID: %d", product.id);
+	sprintf(info[lines++], "Название: %s", product.name);
+	sprintf(info[lines++], "Категория: %s", category.name);
+	sprintf(info[lines++], "Цена: %d", product.cost);
+
+	char rating_str[DESCRIPTION_LENGTH];
+	print_rating(rating_str, product.rating);
+	strcpy(info[lines++], rating_str);
+
+	print_n_times(CARD_WIDTH + DESCRIPTION_LENGTH + 3, '=');
 	printf("\n");
 
 	for (int i = 0; i < CARD_HEIGHT; i++)
 	{
-		if (images != NULL)
-			printf("%-*.*s", CARD_WIDTH, CARD_WIDTH, images[product.image_id].symbols[i]);
+		printf("%s", images[product.image_id].symbols[i]);
+		print_n_times(CARD_WIDTH - strlen(images[product.image_id].symbols[i]), ' ');
+
+		if (i < lines)
+			printf(" | %s\n", info[i]);
 		else
-			print_n_times(CARD_WIDTH, ' ');
-
-		if (i == 1)
-			printf(" | [ID: %d] %s", product.id, product.name);
-		else if (i == 2)
-			printf(" | Цена: %d ", product.cost);
-		else if (i == 3)
-		{
-			printf(" | Отзывы: ");
-			print_rating(product.rating);
-		}
-		else
-			printf(" |");
-		printf("\n");
-	}
-	print_n_times(CARD_WIDTH + 50, '=');
-	printf("\n");
-}
-
-void print_card_big(Product product, Image* images)
-{
-	print_n_times(CARD_WIDTH + 50, '=');
-	printf("\n");
-
-	for (int i = 0; i < CARD_HEIGHT; i++)
-	{
-		if (images != NULL)
-			printf("%-*.*s", CARD_WIDTH, CARD_WIDTH, images[product.image_id].symbols[i]);
-		else
-			print_n_times(CARD_WIDTH, ' ');
-
-		//todo кринж
-		if (i == 1) printf(" | ID: %d", product.id);
-		else if (i == 2) printf(" | Название: %s", product.name);
-		else if (i == 3) { printf(" | Рейтинг: "); print_rating(product.rating); }
-		else if (i == 4) printf(" | Цена: %d", product.cost);
-		else if (i == 5) printf(" | ID категории: %d", product.cs.category_id);
-		else printf(" |");
-
-		printf("\n");
+			printf(" |\n");
 	}
 
 	printf("\nОписание:\n%s\n", product.description);
-	print_n_times(CARD_WIDTH + 50, '=');
+	print_n_times(CARD_WIDTH + DESCRIPTION_LENGTH + 3, '=');
 	printf("\n");
+
+	for (int i = 0; i < category.fields_count; i++)
+		print_category_field(category, product.cs, i);
 }
