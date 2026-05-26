@@ -20,11 +20,11 @@ struct Category
 };
 typedef struct Category Category;
 
-Category read_new_category();
-int get_categories_count();
+Category read_new_category();                                            // Ввод новой категории
+int get_categories_count();                                              // Получение количества категорий
 
-void add_category(Category category);
-Category get_category(int index);
+void add_category(Category category);                                    // Добавление категории в файл
+Category get_category(int index);                                        // Получение категории по индексу
 
-void print_available_categories();
-void print_category_field(Category category, Characteristics cs, int i);
+void print_available_categories();                                       // Вывод списка доступных категорий
+void print_category_field(Category category, Characteristics cs, int i); // Вывод поля категории

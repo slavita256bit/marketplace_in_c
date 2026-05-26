@@ -5,6 +5,7 @@
 
 #include "settings.h"
 
+// Вывод доступных символов для ввода
 void print_ask_chars(const char* acceptable_chars)
 {
     printf("Enter action (");
@@ -15,6 +16,7 @@ void print_ask_chars(const char* acceptable_chars)
     printf("): ");
 }
 
+// Спрашивает пользователя о текущем действии
 char ask_action(const char* acceptable_chars)
 {
     print_ask_chars(acceptable_chars);
@@ -35,6 +37,7 @@ char ask_action(const char* acceptable_chars)
     return answer;
 }
 
+// Ожидание ввода специального символа
 char wait_special_symbol(bool esc, bool enter)
 {
     char answer;
@@ -46,6 +49,7 @@ char wait_special_symbol(bool esc, bool enter)
     return answer;
 }
 
+// Ввод строки или установка значения по умолчанию
 void read_string_or_default(char* out, const char* default_string)
 {
     flush_buffer(stdin, true);

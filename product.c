@@ -5,6 +5,7 @@
 #include "categories.h"
 #include <string.h>
 
+// Импорт товаров из файла
 void import_products(TreeNode** products, char* filename)
 {
 	FILE* file = open_file(filename, true, false, false);
@@ -21,6 +22,7 @@ void import_products(TreeNode** products, char* filename)
 	fclose(file);
 }
 
+// Экспорт товаров в файл
 void export_products(TreeNode* products, char* filename)
 {
 	FILE* file = open_file(filename, true, true, false);
@@ -35,6 +37,7 @@ void export_products(TreeNode* products, char* filename)
 	fclose(file);
 }
 
+// Ввод данных нового товара
 Product read_new_product(int new_id)
 {
 	Product product;
@@ -68,6 +71,7 @@ Product read_new_product(int new_id)
 	return product;
 }
 
+// Вывод рейтинга товара
 void print_rating(int rating)
 {
 	if (rating <= 2) printf(SET_RED);
@@ -80,6 +84,7 @@ void print_rating(int rating)
 	printf(RESET);
 }
 
+// Вывод шапки таблицы товаров
 void print_products_header()
 {
 	printf(SET_BLUE);
@@ -100,7 +105,7 @@ void print_product_row(Product product, int index)
 	printf("\n");
 }
 
-// Вывод большой карточки товара с картинкой
+// Вывод большой карточки товара
 void print_product_details(Product product)
 {
 	Category category = get_category(product.cs.category_id);

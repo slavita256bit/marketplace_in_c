@@ -14,11 +14,11 @@
 #define ENTER '\n'
 #define ALL_SPECIAL_CHARS "\033\r"
 
-FILE* open_file(char* filename, bool binary, bool write_mode, bool exit_on_fail);
-int read_int_range(int from, int to);
-int read_int(FILE* file, bool binary);
-float read_float(FILE* file, bool binary);
-void read_string(char* str, FILE* file, bool until_ln);
-void clear_screen();
-void flush_buffer(FILE* file, bool stdin_skip);
-void print_n_times(int n, char c);
+FILE* open_file(char* filename, bool binary, bool write_mode, bool exit_on_fail); // Открытие файла с обработкой ошибок
+int read_int_range(int from, int to);                                             // Ввод целого числа в заданном диапазоне
+int read_int(FILE* file, bool binary);                                            // Ввод целого числа
+float read_float(FILE* file, bool binary);                                        // Ввод вещественного числа
+void read_string(char* str, FILE* file, bool until_ln);                           // Ввод строки
+void clear_screen();                                                              // Очистка экрана
+void flush_buffer(FILE* file, bool stdin_skip);                                   // Очистка буфера ввода
+void print_n_times(int n, char c);                                                // Вывод символа n раз

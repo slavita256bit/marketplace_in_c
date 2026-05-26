@@ -2,6 +2,7 @@
 #include "product.h"
 #include "io.h"
 
+// Получение количества категорий
 int get_categories_count()
 {
     FILE* file = fopen(CATEGORIES_FILENAME, "rb");
@@ -15,6 +16,7 @@ int get_categories_count()
     return count;
 }
 
+// Добавление категории в файл
 void add_category(Category category)
 {
     FILE* file = fopen(CATEGORIES_FILENAME, "ab");
@@ -28,6 +30,7 @@ void add_category(Category category)
     fclose(file);
 }
 
+// Получение категории по индексу
 Category get_category(int index)
 {
     Category category;
@@ -38,6 +41,7 @@ Category get_category(int index)
     return category;
 }
 
+// Вывод списка доступных категорий
 void print_available_categories()
 {
     int categories_count = get_categories_count();
@@ -47,6 +51,7 @@ void print_available_categories()
     printf("\n");
 }
 
+// Ввод новой категории
 Category read_new_category()
 {
     Category category;
@@ -66,6 +71,7 @@ Category read_new_category()
     return category;
 }
 
+// Вывод поля категории
 void print_category_field(Category category, Characteristics cs, int i)
 {
     if (category.field_types[i] == INT)

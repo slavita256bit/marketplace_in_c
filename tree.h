@@ -23,8 +23,8 @@ void tree_add_element(TreeNode** current, Product x);       // Добавить 
 bool tree_remove_element(TreeNode** current, Product x);    // Удалить элемент из дерева
 void tree_clear(TreeNode** node);                           // Очистить дерево
 
-TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascending);
+TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascending);         // Поиск товара в дереве по индексу
 
-int tree_get_size(TreeNode* node, int category_filter);
-void tree_save_direct(TreeNode* current, FILE* file);
-void tree_card_print(TreeNode* node, bool ascending, int category_filter, int index_offset);
+int tree_get_size(TreeNode* node, int category_filter);                                      // Получение количества элементов в дереве
+void tree_save_direct(TreeNode* current, FILE* file);                                        // Сохранение дерева в файл (прямой обход)
+void tree_card_print(TreeNode* node, bool ascending, int category_filter, int index_offset); // Вывод товаров (симметричный обход)

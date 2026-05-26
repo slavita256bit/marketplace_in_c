@@ -7,11 +7,12 @@
 #include <unistd.h>
 #endif
 
+// Открытие файла с обработкой ошибок
 FILE* open_file(char *filename, bool binary, bool write_mode, bool exit_on_fail)
 {
     FILE* file = fopen(filename, (binary ? (write_mode ? "wb" : "rb") : (write_mode ? "w" : "r")));
-    
-    if (file == NULL) 
+
+    if (file == NULL)
     {
         printf(SET_RED "Cannot open file %s!\n" RESET, filename);
         if (exit_on_fail) exit(0);
@@ -20,6 +21,7 @@ FILE* open_file(char *filename, bool binary, bool write_mode, bool exit_on_fail)
     return file;
 }
 
+// Ввод целого числа в заданном диапазоне
 int read_int_range(int from, int to)
 {
     bool first_iteration = true;
@@ -33,6 +35,7 @@ int read_int_range(int from, int to)
     return x;
 }
 
+// Ввод целого числа
 int read_int(FILE* file, bool binary)
 {
     flush_buffer(file, true);
@@ -48,6 +51,7 @@ int read_int(FILE* file, bool binary)
     return x;
 }
 
+// Ввод вещественного числа
 float read_float(FILE* file, bool binary)
 {
     flush_buffer(file, true);
@@ -63,12 +67,14 @@ float read_float(FILE* file, bool binary)
     return x;
 }
 
+// Ввод строки
 void read_string(char* str, FILE* file, bool until_ln)
 {
     flush_buffer(file, true);
     fscanf(file, (until_ln ? "%[^\n]" : "%s"), str);
 }
 
+// Очистка буфера ввода
 void flush_buffer(FILE* file, bool stdin_only)
 {
     if (!stdin_only || file == stdin)
@@ -81,12 +87,14 @@ void flush_buffer(FILE* file, bool stdin_only)
     }
 }
 
+// Вывод символа n раз
 void print_n_times(int n, char c)
 {
     for (int i = 0; i < n; i++)
         printf("%c", c);
 }
 
+// Очистка экрана
 void clear_screen()
 {
 #ifdef _WIN32

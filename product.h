@@ -29,12 +29,12 @@ struct Product
 };
 typedef struct Product Product;
 
-void import_products(TreeNode** products, char* filename);
-void export_products(TreeNode* products, char* filename);
-Product read_new_product(int new_id);
+void import_products(TreeNode** products, char* filename); // Импорт товаров из файла
+void export_products(TreeNode* products, char* filename);  // Экспорт товаров в файл
+Product read_new_product(int new_id);                      // Ввод данных нового товара
 
-void print_rating(int rating);
+void print_rating(int rating);                             // Вывод рейтинга товара
 
-void print_products_header();
-void print_product_row(Product product, int index);
-void print_product_details(Product product);
+void print_products_header();                              // Вывод шапки таблицы товаров
+void print_product_row(Product product, int index);        // Вывод одного товара в виде строки таблицы
+void print_product_details(Product product);               // Вывод большой карточки товара

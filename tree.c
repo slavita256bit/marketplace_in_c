@@ -32,7 +32,7 @@ int tree_get_depth(TreeNode* node)
 	return max(tree_get_depth(node->left), tree_get_depth(node->right)) + 1;
 }
 
-// Поск следущей вершины для поиска
+// Поиск следующей вершины для поиска
 TreeNode** tree_get_next(TreeNode* node, Product x)
 {
 	return (x.rating <= node->item.rating) ? (&node->left) : (&node->right);
@@ -42,7 +42,7 @@ TreeNode** tree_get_next(TreeNode* node, Product x)
 TreeNode** tree_find_smallest(TreeNode** node)
 {
 	assert((*node) != NULL);
-	
+
 	while ((*node)->left != NULL)
 		node = &(*node)->left;
 
@@ -70,21 +70,21 @@ bool tree_remove_element(TreeNode** current, Product x)
 
 	if ((*current) == NULL)
 		return false;
-		
+
 	TreeNode* to_remove = (*current);
-	
+
 	if (childs_count(to_remove) == 2) // Если у вершины 2 детей
 	{
 		// Поиск наименьшего элемента в правом поддереве (первый больший)
-		TreeNode** smallest_right = tree_find_smallest(&to_remove->right); 
+		TreeNode** smallest_right = tree_find_smallest(&to_remove->right);
 		TreeNode* instead_of_removed = *smallest_right;
-		
+
 		// Вставляем первый больший вместо удалённого
 		(*smallest_right) = instead_of_removed->right;
 
 		instead_of_removed->left = to_remove->left;
 		instead_of_removed->right = to_remove->right;
-		
+
 		(*current) = instead_of_removed;
 	}
 	else // Если у вершины 0 и 1 ребёнок
@@ -103,11 +103,12 @@ void tree_clear(TreeNode** node)
 
 	tree_clear(&((*node)->left));
 	tree_clear(&((*node)->right));
-	
+
 	free(*node);
 	(*node) = NULL;
 }
 
+// Поиск товара в дереве по индексу
 TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascending)
 {
 	if (node == NULL)
@@ -128,6 +129,7 @@ TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascendi
 	return tree_find(second, index - first_size - this_node_correct, category_filter, ascending);
 }
 
+// Получение количества элементов в дереве (с учетом фильтра)
 int tree_get_size(TreeNode* node, int category_filter)
 {
 	if (node == NULL)
@@ -137,7 +139,7 @@ int tree_get_size(TreeNode* node, int category_filter)
 	return tree_get_size(node->left, category_filter) + tree_get_size(node->right, category_filter) + this_node_correct;
 }
 
-// Сохранение в файл в порядке прямого обхода
+// Сохранение дерева в файл (прямой обход)
 void tree_save_direct(TreeNode* current, FILE* file)
 {
 	if (current == NULL) return;
@@ -146,7 +148,7 @@ void tree_save_direct(TreeNode* current, FILE* file)
 	tree_save_direct(current->right, file);
 }
 
-// Симметричный обход
+// Вывод товаров (симметричный обход)
 void tree_card_print(TreeNode* node, bool ascending, int category_filter, int index_offset)
 {
 	if (node == NULL)
