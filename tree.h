@@ -1,5 +1,7 @@
 #pragma once
 #include <malloc.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include "product.h"
 
 typedef struct TreeNode TreeNode;

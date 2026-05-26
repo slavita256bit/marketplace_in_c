@@ -8,8 +8,6 @@
 
 int main(void)
 {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
-
     char products_filename[FILENAME_MAX];
     TreeNode* products = NULL, *current_product = NULL;
 
@@ -50,7 +48,7 @@ int main(void)
 
         case ADD_PRODUCT:
             print_available_categories();
-            Product product = read_new_product(products_count);
+            Product product = read_new_product(tree_get_size(products));
             tree_add_element(&products, product); // todo add confirm in while
             printf(SET_GREEN "Товар добавлен!\n" RESET);
             break;

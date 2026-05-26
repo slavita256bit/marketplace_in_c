@@ -1,6 +1,8 @@
 #include "tree.h"
 #include "utils.h"
 #include <assert.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 // Создать узел
 TreeNode* tree_create_node(Product x)
