@@ -16,7 +16,7 @@ TreeNode* tree_create_node(Product x);                      // Создать у
 int childs_count(TreeNode* node);                           // Получение количества детей узла
 int tree_get_depth(TreeNode* node);                         // Узнать глубину дерева
 
-TreeNode** tree_get_next(TreeNode* node, Product x);        // Поск следущей вершины для поиска
+TreeNode** tree_get_next(TreeNode* node, Product x);        // Поиск следующей вершины для поиска
 TreeNode** tree_find_smallest(TreeNode** node);             // Найти наименьший узел в поддереве
 
 void tree_add_element(TreeNode** current, Product x);       // Добавить элемент в дерево

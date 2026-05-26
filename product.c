@@ -45,7 +45,7 @@ Product read_new_product(int new_id)
 	read_string(product.description, stdin, true);
 	printf("Cost: ");
 	product.cost = read_int(stdin, false);
-	printf("Rating (от 1 до %d): ", MAX_RATING);
+	printf("Rating (from 1 to %d): ", MAX_RATING);
 	product.rating = read_int_range(1, MAX_RATING);
 	printf("Category ID: ");
 	product.cs.category_id = read_int(stdin, false);
