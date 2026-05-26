@@ -20,7 +20,7 @@ void add_category(Category category)
     FILE* file = fopen(CATEGORIES_FILENAME, "ab");
     if (file == NULL)
     {
-        printf("Не удалось открыть файл %s для добавления категории.\n", CATEGORIES_FILENAME);
+        printf("Failed to open file %s to add category.\n", CATEGORIES_FILENAME);
         exit(0);
     }
 
@@ -41,7 +41,7 @@ Category get_category(int index)
 void print_available_categories()
 {
     int categories_count = get_categories_count();
-    printf("\nДоступные категории:\n");
+    printf("\nAvailable categories:\n");
     for (int i = 0; i < categories_count; i++)
         printf("%d - %s\n", i, get_category(i).name);
     printf("\n");
@@ -50,17 +50,17 @@ void print_available_categories()
 Category read_new_category()
 {
     Category category;
-    printf("Название категории: ");
+    printf("Category name: ");
     read_string(category.name, stdin, true);
 
-    printf("Количество дополнительных полей (до %d): ", MAX_FIELD_COUNT);
+    printf("Number of additional fields (up to %d): ", MAX_FIELD_COUNT);
     category.fields_count = read_int_range(0, MAX_FIELD_COUNT);
 
     for (int i = 0; i < category.fields_count; i++)
     {
-        printf("Название поля %d: ", i + 1);
+        printf("Field %d name: ", i + 1);
         read_string(category.field_names[i], stdin, true);
-        printf("Тип поля (0 - Целое число, 1 - Дробное число, 2 - Строка): ");
+        printf("Field type (0 - Integer, 1 - Float, 2 - String): ");
         category.field_types[i] = (Type)read_int_range(0, 2);
     }
     return category;

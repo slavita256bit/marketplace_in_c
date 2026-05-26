@@ -13,7 +13,7 @@ FILE* open_file(char *filename, bool binary, bool write_mode, bool exit_on_fail)
     
     if (file == NULL) 
     {
-        printf(SET_RED "Невозможно открыть файл %s!\n" RESET, filename);
+        printf(SET_RED "Cannot open file %s!\n" RESET, filename);
         if (exit_on_fail) exit(0);
     }
 
@@ -26,7 +26,7 @@ int read_int_range(int from, int to)
     int x;
     do
     {
-        if (!first_iteration) printf("Неверный формат! Введите число (от %d, до %d): ", from, to);
+        if (!first_iteration) printf("Invalid format! Enter a number (from %d to %d): ", from, to);
         x = read_int(stdin, false);
         first_iteration = false;
     } while (x < from || x > to);

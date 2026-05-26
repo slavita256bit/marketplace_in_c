@@ -1,0 +1,82 @@
+void init_default_data(TreeNode** products)
+{
+    if (get_categories_count() == 0)
+    {
+        Category c1;
+        strcpy(c1.name, "Electronics");
+        c1.fields_count = 3;
+        c1.field_types[0] = STR;
+        strcpy(c1.field_names[0], "Brand");
+        c1.field_types[1] = INT;
+        strcpy(c1.field_names[1], "Warranty (months)");
+        c1.field_types[2] = FLOAT;
+        strcpy(c1.field_names[2], "Weight (kg)");
+        add_category(c1);
+
+        Category c2;
+        strcpy(c2.name, "Books");
+        c2.fields_count = 2;
+        c2.field_types[0] = STR;
+        strcpy(c2.field_names[0], "Author");
+        c2.field_types[1] = INT;
+        strcpy(c2.field_names[1], "Pages");
+        add_category(c2);
+
+        Category c3;
+        strcpy(c3.name, "Clothing");
+        c3.fields_count = 2;
+        c3.field_types[0] = STR;
+        strcpy(c3.field_names[0], "Size");
+        c3.field_types[1] = STR;
+        strcpy(c3.field_names[1], "Material");
+        add_category(c3);
+
+        Product p1;
+        p1.id = 0;
+        strcpy(p1.name, "GPhone 42 Pro Max Ultra");
+        strcpy(p1.description, "Worth smartphone ever");
+        p1.cost = 4242;
+        p1.rating = 1;
+        p1.cs.category_id = 0;
+        strcpy(p1.cs.fields[0].str, "Gapple");
+        p1.cs.fields[1].number = 0;
+        p1.cs.fields[2].real = 4.2f;
+        tree_add_element(products, p1);
+
+        Product p2;
+        p2.id = 1;
+        strcpy(p2.name, "Mac macro 1 PB");
+        strcpy(p2.description, "Very big portable PC with 1 PB of data");
+        p2.cost = 1500;
+        p2.rating = 4;
+        p2.cs.category_id = 0;
+        strcpy(p2.cs.fields[0].str, "Banana");
+        p2.cs.fields[1].number = 42;
+        p2.cs.fields[2].real = 1.42f;
+        tree_add_element(products, p2);
+
+        Product p3;
+        p3.id = 2;
+        strcpy(p3.name, "Book \"Clean code\"");
+        strcpy(p3.description, "Book about how to write cleanest code");
+        p3.cost = 999;
+        p3.rating = 5;
+        p3.cs.category_id = 1;
+        strcpy(p3.cs.fields[0].str, "Robert Martin");
+        p3.cs.fields[1].number = 333;
+        tree_add_element(products, p3);
+
+        Product p4;
+        p4.id = 3;
+        strcpy(p4.name, "BSUIR T-Shirt");
+        strcpy(p4.description, "Comfortable cotton t-shirt");
+        p4.cost = 15;
+        p4.rating = 4;
+        p4.cs.category_id = 2;
+        strcpy(p4.cs.fields[0].str, "XXXXL");
+        strcpy(p4.cs.fields[1].str, "Cotton");
+        tree_add_element(products, p4);
+
+        export_products(*products, PRODUCTS_DEFAULT_FILENAME);
+    }
+}

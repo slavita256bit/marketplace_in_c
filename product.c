@@ -39,15 +39,15 @@ Product read_new_product(int new_id)
 {
 	Product product;
 	product.id = new_id;
-	printf("Название: ");
+	printf("Name: ");
 	read_string(product.name, stdin, true);
-	printf("Описание: ");
+	printf("Description: ");
 	read_string(product.description, stdin, true);
-	printf("Цена: ");
+	printf("Cost: ");
 	product.cost = read_int(stdin, false);
-	printf("Рейтинг (от 1 до %d): ", MAX_RATING);
+	printf("Rating (от 1 до %d): ", MAX_RATING);
 	product.rating = read_int_range(1, MAX_RATING);
-	printf("ID категории: ");
+	printf("Category ID: ");
 	product.cs.category_id = read_int(stdin, false);
 
 	Category cat = get_category(product.cs.category_id);
@@ -84,7 +84,7 @@ void print_products_header()
 {
 	printf(SET_BLUE);
 	printf("%-2s %-*s %-*s %-5s %-10s \n",
-			"ID", MAX_LENGTH, "Название", MAX_LENGTH, "Категория", "Цена", "Рейтинг");
+			"ID", MAX_LENGTH, "Name", MAX_LENGTH, "Category", "Cost", "Rating");
 	printf(RESET "\n");
 }
 

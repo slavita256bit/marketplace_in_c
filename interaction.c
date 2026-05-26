@@ -7,7 +7,7 @@
 
 void print_ask_chars(const char* acceptable_chars)
 {
-    printf("Введите действие (");
+    printf("Enter action (");
     int n = strlen(acceptable_chars);
     for (int i = 0; i < n - 1; i++)
         printf("%c/", acceptable_chars[i]);
@@ -24,7 +24,6 @@ char ask_action(const char* acceptable_chars)
     do
     {
         flush_buffer(stdin, true);
-        //scanf_s("%c", &answer, 1);
         answer = _getch();
         printf("%c\n", answer);
         valid_char = (strchr(acceptable_chars, answer) == NULL);
