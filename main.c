@@ -36,7 +36,6 @@ int main(void)
             break;
 
         case IMPORT_PRODUCTS:
-        {
             printf("Enter filename to import products (Enter for %s): ", PRODUCTS_DEFAULT_FILENAME);
             read_string_or_default(products_filename, PRODUCTS_DEFAULT_FILENAME);
 
@@ -47,45 +46,56 @@ int main(void)
             printf(current_products_count - prev_products_count > 0 ? SET_GREEN : SET_RED);
             printf("Imported %d products, total products %d\n" RESET, current_products_count - prev_products_count, current_products_count);
             break;
-        }
 
         case ADD_PRODUCT:
-        {
-            print_available_categories();
-            Product product = read_new_product(tree_get_size(products));
-            tree_add_element(&products, product); // todo add confirm in while
+            Product product;
+            do
+            {
+                print_available_categories();
+                product = read_new_product(tree_get_size(products));
+                printf("\n");
+                print_product_details(product);
+                printf("All data correct? (y/n): ");
+            } while (ask_action("yn") == 'y');
+            tree_add_element(&products, product);
             printf(SET_GREEN "Product added!\n" RESET);
             break;
-        }
 
         case ADD_CATEGORY:
-        {
-            Category cat = read_new_category();
-            add_category(cat); // todo add confirm in while
+            Category category;
+            do {
+                printf("\n");
+                category = read_new_category();
+                printf("All data correct? (y/n): ");
+            } while (ask_action("yn") == 'y');
+            add_category(category);
             printf(SET_GREEN "Category successfully added!\n" RESET);
             break;
-        }
 
         case EXPORT_PRODUCTS:
-        {
             printf("Enter filename to export products (Enter for %s): ", PRODUCTS_DEFAULT_FILENAME);
             read_string_or_default(products_filename, PRODUCTS_DEFAULT_FILENAME);
             export_products(products, products_filename);
             printf(SET_GREEN "Products saved to file!\n" RESET);
             break;
-        }
 
         case LIST_PRODUCTS:
-        {
             printf("Sorting by rating\n");
             printf("a - Ascending\n");
             printf("d - Descending\n");
             bool ascending = (ask_action("ad") == 'a');
 
-            print_products_header();
-            tree_card_print(products, ascending);
+            printf("Filter by category? (y/n): ");
+            int filter = -1;
+            if (ask_action("yn") == 'y')
+            {
+                print_available_categories();
+                printf("Enter category ID: ");
+                filter = read_int_range(0, get_categories_count() - 1);
+            }
 
-            // filter by category (mb with tree)
+            print_products_header();
+            tree_card_print(products, ascending, filter);
 
             printf("Press Enter to view a product, Esc to return to menu\n");
             if (wait_special_symbol(true, true) == ENTER)
@@ -98,10 +108,8 @@ int main(void)
                 state = MENU;
 
             break;
-        }
 
         case VIEW_PRODUCT:
-        {
             print_product_details(current_product->item);
 
             printf("\nPress Enter to rate the product, Esc for product list.\n");
@@ -109,15 +117,19 @@ int main(void)
             if (wait_special_symbol(true, true) == ENTER)
             {
                 printf("Rate the product from 1 to %d: ", MAX_RATING);
-                current_product->item.rating = read_int_range(1, MAX_RATING);
-                // Если после изменения рейтинга ломается BST (так как дерево строится по рейтингу),
-                // позже мы будем дерево перестраивать, сейчас оставляем так.
-                state = VIEW_PRODUCT;
+                int new_rating = read_int_range(1, MAX_RATING);
+
+                if (new_rating != current_product->item.rating)
+                {
+                    Product updated_product = current_product->item;
+                    tree_remove_element(&products, updated_product);
+                    updated_product.rating = new_rating;
+                    tree_add_element(&products, updated_product);
+                }
             }
-            else
-                state = LIST_PRODUCTS;
+
+            state = LIST_PRODUCTS;
             break;
-        }
         }
 
         if (prev_state != MENU && prev_state != LIST_PRODUCTS)

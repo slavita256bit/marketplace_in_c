@@ -40,7 +40,11 @@ int read_int(FILE* file, bool binary)
     if (binary)
         fread(&x, sizeof(int), 1, file);
     else
-        fscanf(file, "%d", &x);
+        while (fscanf(file, "%d", &x) == 0)
+        {
+            printf(SET_RED "Invalid input! Expected an integer: " RESET);
+            flush_buffer(file, true);
+        }
     return x;
 }
 
@@ -51,7 +55,11 @@ float read_float(FILE* file, bool binary)
     if (binary)
         fread(&x, sizeof(float), 1, file);
     else
-        fscanf(file, "%f", &x);
+        while (fscanf(file, "%f", &x) == 0)
+        {
+            printf(SET_RED "Invalid input! Expected a float: " RESET);
+            flush_buffer(file, true);
+        }
     return x;
 }
 

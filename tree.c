@@ -52,8 +52,12 @@ TreeNode** tree_find_smallest(TreeNode** node)
 // Добавить элемент в дерево
 void tree_add_element(TreeNode** current, Product x)
 {
-	while ((*current) != NULL) 
+	while ((*current) != NULL)
+	{
+		if (x.id == (*current)->item.id)
+			return;
 		current = tree_get_next(*current, x);
+	}
 
 	(*current) = tree_create_node(x);
 }
@@ -137,7 +141,7 @@ void tree_save_direct(TreeNode* current, FILE* file)
 }
 
 // Симметричный обход
-void tree_card_print(TreeNode* node, bool ascending)
+void tree_card_print(TreeNode* node, bool ascending, int category_id)
 {
 	if (node == NULL)
 		return;
@@ -145,7 +149,8 @@ void tree_card_print(TreeNode* node, bool ascending)
 	TreeNode* first = (ascending ? node->right : node->left);
 	TreeNode* second = (ascending ? node->left : node->right);
 
-	tree_card_print(first, ascending);
-	print_product_row(node->item);
-	tree_card_print(second, ascending);
+	tree_card_print(first, ascending, category_id);
+	if (node->item.cs.category_id == category_id)
+		print_product_row(node->item);
+	tree_card_print(second, ascending, category_id);
 }
