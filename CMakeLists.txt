@@ -11,8 +11,6 @@ add_executable(marketplace_in_c main.c
         io.h
         stack.c
         stack.h
-        image.c
-        image.h
         tree.c
         tree.h
         interaction.c

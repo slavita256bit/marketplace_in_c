@@ -1,7 +1,6 @@
 #pragma once
 #include <malloc.h>
 #include "product.h"
-#include "image.h"
 
 typedef struct TreeNode TreeNode;
 struct TreeNode
@@ -26,4 +25,4 @@ TreeNode* tree_find(TreeNode* node, int index);
 
 int tree_get_size(TreeNode* node);
 void tree_save_direct(TreeNode* current, FILE* file);
-void tree_card_print(TreeNode* node, Image* images, bool ascending);
+void tree_card_print(TreeNode* node, bool ascending);

@@ -50,7 +50,7 @@ char wait_special_symbol(bool esc, bool enter)
 void read_string_or_default(char* out, const char* default_string)
 {
     flush_buffer(stdin, true);
-    fgets(out, sizeof(out), stdin);
+    fgets(out, FILENAME_MAX, stdin);
     if (out[0] == '\n')
     {
         strcpy(out, default_string);

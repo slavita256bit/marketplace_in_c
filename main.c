@@ -1,10 +1,7 @@
 #include <locale.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "categories.h"
-#include "image.h"
 #include "interaction.h"
+#include "io.h"
 #include "product.h"
 #include "stack.h"
 #include "tree.h"
@@ -14,8 +11,6 @@ int main(void)
     setlocale(LC_ALL, "ru_RU.UTF-8");
 
     char products_filename[FILENAME_MAX];
-    int images_count = 0;
-    Image* images = import_images(&images_count);
     TreeNode* products = NULL, *current_product = NULL;
 
     State state = MENU;
@@ -54,16 +49,15 @@ int main(void)
             break;
 
         case ADD_PRODUCT:
-            print_available_images(images, images_count);
             print_available_categories();
-            Product product = read_new_product(products_count, images_count);
-            tree_add_element(&products, product);
+            Product product = read_new_product(products_count);
+            tree_add_element(&products, product); // todo add confirm in while
             printf(SET_GREEN "Товар добавлен!\n" RESET);
             break;
 
         case ADD_CATEGORY:
             Category cat = read_new_category();
-            add_category(cat);
+            add_category(cat); // todo add confirm in while
             printf(SET_GREEN "Категория успешно добавлена!\n" RESET);
             break;
 
@@ -80,7 +74,7 @@ int main(void)
             bool ascending = (ask_action("ad") == 'a');
 
             print_products_header();
-            tree_card_print(products, images, ascending);
+            tree_card_print(products, ascending);
 
             // filter by category (mb with tree)
 
@@ -97,7 +91,7 @@ int main(void)
             break;
 
         case VIEW_PRODUCT:
-            print_product_details(current_product->item, images);
+            print_product_details(current_product->item);
 
             printf("Нажмите Enter чтобы оценить товар, Esc для списка товаров.\n");
 
@@ -123,7 +117,6 @@ int main(void)
     } while (state != 'x');
 
     tree_clear(&products);
-    free(images);
 
     return 0;
 }

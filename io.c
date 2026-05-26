@@ -26,7 +26,7 @@ int read_int_range(int from, int to)
     int x;
     do
     {
-        if (!first_iteration) printf("Введите число (от %d, до %d): ", from, to);
+        if (!first_iteration) printf("Неверный формат! Введите число (от %d, до %d): ", from, to);
         x = read_int(stdin, false);
         first_iteration = false;
     } while (x < from || x > to);
