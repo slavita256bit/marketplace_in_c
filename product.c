@@ -84,17 +84,17 @@ void print_products_header()
 {
 	printf(SET_BLUE);
 	printf("%-2s %-*s %-*s %-5s %-10s \n",
-			"ID", MAX_LENGTH, "Name", MAX_LENGTH, "Category", "Cost", "Rating");
-	printf(RESET "\n");
+			"#", MAX_LENGTH, "Name", MAX_LENGTH, "Category", "Cost", "Rating");
+	printf(RESET);
 }
 
 // Вывод одного товара в виде строки таблицы
-void print_product_row(Product product)
+void print_product_row(Product product, int index)
 {
 	Category category = get_category(product.cs.category_id);
 
-	printf("%-2d %-*s %-*s %-5d",
-			product.id, MAX_LENGTH, product.name, MAX_LENGTH, category.name, product.cost);
+	printf("%-2d %-*s %-*s %-5d ",
+			index, MAX_LENGTH, product.name, MAX_LENGTH, category.name, product.cost);
 
 	print_rating(product.rating);
 	printf("\n");
@@ -106,14 +106,14 @@ void print_product_details(Product product)
 	Category category = get_category(product.cs.category_id);
 
 	printf("ID: %d\n", product.id);
-	printf("Название: %s\n", product.name);
-	printf("Категория: %s\n", category.name);
-	printf("Цена: %d\n", product.cost);
-
-	printf("\nОписание:\n%s\n", product.description);
-
+	printf("Name: %s\n", product.name);
+	printf("Category: %s\n", category.name);
+	printf("Cost: %d\n", product.cost);
+	printf("Rating: ");
 	print_rating(product.rating);
 	printf("\n");
+
+	printf("\nDescription:\n%s\n\n", product.description);
 
 	for (int i = 0; i < category.fields_count; i++)
 	{

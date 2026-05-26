@@ -36,5 +36,5 @@ Product read_new_product(int new_id);
 void print_rating(int rating);
 
 void print_products_header();
-void print_product_row(Product product);
+void print_product_row(Product product, int index);
 void print_product_details(Product product);

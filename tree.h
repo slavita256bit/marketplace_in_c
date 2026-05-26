@@ -23,8 +23,8 @@ void tree_add_element(TreeNode** current, Product x);       // Добавить 
 bool tree_remove_element(TreeNode** current, Product x);    // Удалить элемент из дерева
 void tree_clear(TreeNode** node);                           // Очистить дерево
 
-TreeNode* tree_find(TreeNode* node, int index);
+TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascending);
 
-int tree_get_size(TreeNode* node);
+int tree_get_size(TreeNode* node, int category_filter);
 void tree_save_direct(TreeNode* current, FILE* file);
-void tree_card_print(TreeNode* node, bool ascending, int category_id);
+void tree_card_print(TreeNode* node, bool ascending, int category_filter, int index_offset);

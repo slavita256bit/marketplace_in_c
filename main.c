@@ -39,9 +39,9 @@ int main(void)
             printf("Enter filename to import products (Enter for %s): ", PRODUCTS_DEFAULT_FILENAME);
             read_string_or_default(products_filename, PRODUCTS_DEFAULT_FILENAME);
 
-            int prev_products_count = tree_get_size(products);
+            int prev_products_count = tree_get_size(products, -1);
             import_products(&products, products_filename);
-            int current_products_count = tree_get_size(products);
+            int current_products_count = tree_get_size(products, -1);
 
             printf(current_products_count - prev_products_count > 0 ? SET_GREEN : SET_RED);
             printf("Imported %d products, total products %d\n" RESET, current_products_count - prev_products_count, current_products_count);
@@ -52,11 +52,11 @@ int main(void)
             do
             {
                 print_available_categories();
-                product = read_new_product(tree_get_size(products));
+                product = read_new_product(tree_get_size(products, -1));
                 printf("\n");
                 print_product_details(product);
-                printf("All data correct? (y/n): ");
-            } while (ask_action("yn") == 'y');
+                printf("All data correct? ");
+            } while (ask_action("yn") == 'n');
             tree_add_element(&products, product);
             printf(SET_GREEN "Product added!\n" RESET);
             break;
@@ -66,8 +66,8 @@ int main(void)
             do {
                 printf("\n");
                 category = read_new_category();
-                printf("All data correct? (y/n): ");
-            } while (ask_action("yn") == 'y');
+                printf("All data correct? ");
+            } while (ask_action("yn") == 'n');
             add_category(category);
             printf(SET_GREEN "Category successfully added!\n" RESET);
             break;
@@ -85,7 +85,7 @@ int main(void)
             printf("d - Descending\n");
             bool ascending = (ask_action("ad") == 'a');
 
-            printf("Filter by category? (y/n): ");
+            printf("Filter by category? ");
             int filter = -1;
             if (ask_action("yn") == 'y')
             {
@@ -95,13 +95,13 @@ int main(void)
             }
 
             print_products_header();
-            tree_card_print(products, ascending, filter);
+            tree_card_print(products, ascending, filter, 0);
 
             printf("Press Enter to view a product, Esc to return to menu\n");
             if (wait_special_symbol(true, true) == ENTER)
             {
                 printf("Enter the product index to view.\n");
-                current_product = tree_find(products, read_int_range(0, tree_get_size(products) - 1));
+                current_product = tree_find(products, read_int_range(0, tree_get_size(products, filter) - 1), filter, ascending);
                 state = VIEW_PRODUCT;
             }
             else

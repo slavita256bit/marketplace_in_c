@@ -108,27 +108,33 @@ void tree_clear(TreeNode** node)
 	(*node) = NULL;
 }
 
-TreeNode* tree_find(TreeNode* node, int index)
+TreeNode* tree_find(TreeNode* node, int index, int category_filter, bool ascending)
 {
 	if (node == NULL)
 		return NULL;
 
-	int left_size = tree_get_size(node->left);
+	TreeNode* first = (ascending ? node->right : node->left);
+	TreeNode* second = (ascending ? node->left : node->right);
 
-	if (index == left_size)
+	int first_size = tree_get_size(first, category_filter);
+	bool this_node_correct = (category_filter == -1 || node->item.cs.category_id == category_filter);
+
+	if (this_node_correct && index == first_size)
 		return node;
 
-	if (index < left_size)
-		return tree_find(node->left, index);
+	if (index < first_size)
+		return tree_find(first, index, category_filter, ascending);
 
-	return tree_find(node->right, index - left_size - 1);
+	return tree_find(second, index - first_size - this_node_correct, category_filter, ascending);
 }
 
-int tree_get_size(TreeNode* node)
+int tree_get_size(TreeNode* node, int category_filter)
 {
 	if (node == NULL)
 		return 0;
-	return tree_get_size(node->left) + tree_get_size(node->right) + 1;
+
+	bool this_node_correct = (category_filter == -1 || node->item.cs.category_id == category_filter);
+	return tree_get_size(node->left, category_filter) + tree_get_size(node->right, category_filter) + this_node_correct;
 }
 
 // Сохранение в файл в порядке прямого обхода
@@ -141,7 +147,7 @@ void tree_save_direct(TreeNode* current, FILE* file)
 }
 
 // Симметричный обход
-void tree_card_print(TreeNode* node, bool ascending, int category_id)
+void tree_card_print(TreeNode* node, bool ascending, int category_filter, int index_offset)
 {
 	if (node == NULL)
 		return;
@@ -149,8 +155,10 @@ void tree_card_print(TreeNode* node, bool ascending, int category_id)
 	TreeNode* first = (ascending ? node->right : node->left);
 	TreeNode* second = (ascending ? node->left : node->right);
 
-	tree_card_print(first, ascending, category_id);
-	if (node->item.cs.category_id == category_id)
-		print_product_row(node->item);
-	tree_card_print(second, ascending, category_id);
+	int current_index = index_offset + tree_get_size(first, category_filter);
+
+	tree_card_print(first, ascending, category_filter, index_offset);
+	if (category_filter == -1 || node->item.cs.category_id == category_filter)
+		print_product_row(node->item, current_index);
+	tree_card_print(second, ascending, category_filter, current_index + 1);
 }
