@@ -103,5 +103,3 @@ void clear_screen()
     system("clear");
 #endif
 }
-
-//todo валидации
